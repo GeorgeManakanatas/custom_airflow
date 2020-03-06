@@ -35,28 +35,27 @@ run_airflow_container_with_volume(){
     #
     host_port="8080"
     container_port="8080"
-    local_volume_folder_path=""
+    local_volume_folder_path="/home/georgemanakanatas/Documents/projects/custom_airflow/dags"
+    container_name="myAirflow"
     #
-    sudo docker run -d --name %container_name% -p $host_port:$container_port -v $local_volume_folder_path:/usr/local/airflow/dags puckel/docker-airflow webserver
+    sudo docker run -d --name $container_name -p $host_port:$container_port -v $local_volume_folder_path:/usr/local/airflow/dags puckel/docker-airflow webserver
 }
 start_airflow_container(){
     #
     container_name=$(zenity --entry --title="Start Container" --text="Container to start?" );
-    container_name="myAirflow"
     #
     sudo docker container start $container_name
 }
 stop_airflow_container(){
     #
     container_name=$(zenity --entry --title="Stop Container" --text="Container to stop?" );
-    container_name="myAirflow"
+
     #
     sudo docker container stop $container_name
 }
 remove_airflow_container(){
     #
     container_name=$(zenity --entry --title="Remove Container" --text="Container to remove?" );
-    container_name="myAirflow"
     #
     sudo docker container stop $container_name
     sudo docker container rm $container_name
@@ -74,8 +73,9 @@ start_menu(){
   title="Airflow GUI"
   prompt="Please pick action to perform"
   windowHeight=500
+  windowWidth=300
   #
-  response=$(zenity --height="$windowHeight" --list --checklist \
+  response=$(zenity --height="$windowHeight" --width="$windowWidth" --list --checklist \
     --title="$title" --column="" --column="Options" \
     False "Show images" \
     False "Pull Airflow image" \
@@ -98,7 +98,7 @@ start_menu(){
   IFS=":" ; for word in $response ; do
      case $word in
         "Show images")
-            #   
+            #
             show_images ;;
         "Pull Airflow image")
             #
