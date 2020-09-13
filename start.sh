@@ -28,8 +28,9 @@ run_airflow_container(){
     #
     host_port="8080"
     container_port="8080"
+    container_name="myAirflow"
     #
-    sudo docker run -d --name %container_name% -p $host_port:$container_port puckel/docker-airflow webserver
+    sudo docker run -d --name $container_name -p $host_port:$container_port puckel/docker-airflow webserver
 }
 run_airflow_container_with_volume(){
     #
@@ -38,7 +39,10 @@ run_airflow_container_with_volume(){
     local_volume_folder_path="/home/georgemanakanatas/Documents/projects/custom_airflow/dags"
     container_name="myAirflow"
     #
-    sudo docker run -d --name $container_name -p $host_port:$container_port -v $local_volume_folder_path:/usr/local/airflow/dags puckel/docker-airflow webserver
+    # sudo docker run -d --name $container_name -p $host_port:$container_port -v $local_volume_folder_path:/usr/local/airflow/dags logal:airflow webserver
+    # sudo docker run -d --name $container_name -p $host_port:$container_port -v $local_volume_folder_path:/usr/local/airflow/dags apache/airflow webserver
+    # with local executor
+    sudo docker-compose -f docker_compose_LocalExecutor.yml up -d
 }
 start_airflow_container(){
     #
