@@ -15,11 +15,11 @@ IF %1 EQU help (
     )
     IF %1 EQU run (
         ECHO "Running airflow container"
-        docker run -d --name %container_name% -p %host_port%:%container_port% puckel/docker-airflow webserver
+        docker run -d --name %container_name% --restart always -p %host_port%:%container_port% puckel/docker-airflow webserver
     )
     IF %1 EQU run_with_volume (
         ECHO "Running Airflow container with volume"
-        docker run -d --name %container_name% -p %host_port%:%container_port% -v %local_volume_folder_path%:/usr/local/airflow/dags  puckel/docker-airflow webserver
+        docker run -d --name %container_name% --restart always -p %host_port%:%container_port% -v %local_volume_folder_path%:/usr/local/airflow/dags  puckel/docker-airflow webserver
     )
     IF %1 EQU remove (
         ECHO "Removing airflow container"
