@@ -1,37 +1,37 @@
-from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
+#!/usr/bin/python3
+from airflow.models import DAG
+from airflow.operators.bash_operator import BashOperator
 from datetime import datetime, timedelta
-from time import sleep
-from random import seed, randint
-import docker
+
+# let's setup arguments for our dag
+
+my_dag_id = "my_bash_dag"
 
 default_args = {
-    'owner': 'abc',
-    'start_date': datetime(2021, 3, 11),
-    'email': ['abc@xyz.com'],
-    'email_on_failure': False,
-    'email_on_retry': False,
-    'concurrency':1,
-    'retries': 1,
-    'retry_delay': timedelta(minutes=1)
+    'owner': 'proton',
+    'depends_on_past': False,
+    'retries': 10,
+    'concurrency': 1
 }
 
-def executable_function():
-    # cli = docker.DockerClient(base_url='tcp://127.0.0.1:2375') # windows 
-    cli = docker.DockerClient(base_url='unix://var/run/docker.sock') # linux
-    containers = cli.containers.list(all=True)
+# dag declaration
 
-    cont =containers[0]
-    print(len(containers))
-    print(cont.short_id)
-
-
-dag = DAG('Docker_containers', default_args=default_args)
-
-task_1 = PythonOperator(
-    task_id='print_the_context.',
-    python_callable=executable_function,
-    dag=dag)
+dag = DAG(
+    dag_id=my_dag_id,
+    default_args=default_args,
+    start_date=datetime(2019, 6, 17),
+    schedule_interval=timedelta(seconds=5)
+)
 
 
-task_1
+# Here's a task based on Bash Operator!
+
+bash_task_1 = BashOperator(task_id='bash_task_1',
+                         bash_command="echo 'Hello Airflow!'",
+                         dag=dag)
+
+bash_task_2 = BashOperator(task_id='bash_task_2',
+                         bash_command="./test.sh",
+                         dag=dag)
+
+bash_task_1 >> bash_task_2

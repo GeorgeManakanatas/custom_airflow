@@ -10,7 +10,8 @@ notification(){
 }
 pull_airflow_image(){
     # rabbitmq variables
-    image_name="puckel/docker-airflow"
+    # image_name="puckel/docker-airflow"
+    image_name="local2/docker-airflow"
     #
     sudo docker pull $image_name
 }
