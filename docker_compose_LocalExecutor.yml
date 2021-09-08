@@ -7,14 +7,15 @@ services:
             - POSTGRES_USER=airflow
             - POSTGRES_PASSWORD=airflow
             - POSTGRES_DB=airflow
+        volumes:
+            - database_data:/var/lib/postgresql/data
         logging:
             options:
                 max-size: 10m
                 max-file: "3"
 
     webserver:
-        image: puckel/docker-airflow:1.10.9
-        # name: docker_airflow
+        build: .
         restart: always
         depends_on:
             - postgres
@@ -26,8 +27,7 @@ services:
                 max-size: 10m
                 max-file: "3"
         volumes:
-            - ./dags:/usr/local/airflow/dags
-            # - ./plugins:/usr/local/airflow/plugins
+            - I:\GM\Documents\projects\custom_airflow\dags:/usr/local/airflow/dags
         ports:
             - "8080:8080"
         command: webserver
@@ -36,3 +36,6 @@ services:
             interval: 30s
             timeout: 30s
             retries: 3
+volumes:
+    database_data:
+        external: true

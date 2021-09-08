@@ -10,8 +10,7 @@ notification(){
 }
 pull_airflow_image(){
     # rabbitmq variables
-    # image_name="puckel/docker-airflow"
-    image_name="local2/docker-airflow"
+    image_name="puckel/docker-airflow"
     #
     sudo docker pull $image_name
 }
@@ -27,22 +26,10 @@ show_containers(){
 }
 run_airflow_container(){
     #
-    host_port="8080"
-    container_port="8080"
-    container_name="docker_airflow"
-    #
-    sudo docker run -d --name $container_name -p $host_port:$container_port puckel/docker-airflow webserver
+    sudo docker-compose -f docker_compose_LocalExecutor.yml up -d
 }
 run_airflow_container_with_volume(){
     #
-    host_port="8080"
-    container_port="8080"
-    local_volume_folder_path="/home/georgemanakanatas/Documents/projects/custom_airflow/dags"
-    container_name="docker_airflow"
-    #
-    # sudo docker run -d --name $container_name -p $host_port:$container_port -v $local_volume_folder_path:/usr/local/airflow/dags logal:airflow webserver
-    # sudo docker run -d --name $container_name -p $host_port:$container_port -v $local_volume_folder_path:/usr/local/airflow/dags apache/airflow webserver
-    # with local executor
     sudo docker-compose -f docker_compose_LocalExecutor.yml up -d
 }
 start_airflow_container(){
