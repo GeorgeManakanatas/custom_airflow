@@ -14,7 +14,7 @@ services:
                 max-size: 10m
                 max-file: "3"
 
-    webserver:
+    airflow:
         build: .
         restart: always
         depends_on:
@@ -27,7 +27,7 @@ services:
                 max-size: 10m
                 max-file: "3"
         volumes:
-            - I:\GM\Documents\projects\custom_airflow\dags:/usr/local/airflow/dags
+            - /home/georgemanakanatas/Documents/projects/custom_airflow/dags:/usr/local/airflow/dags
         ports:
             - "8080:8080"
         command: webserver
